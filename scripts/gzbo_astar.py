@@ -227,21 +227,21 @@ def main_loop():
                 g.addedge(j+i*col,j-1+(i+1)*col, 1.41)
                 g.addedge(j+i*col,j+1+(i-1)*col, 1.41)
                 g.addedge(j+i*col,j-1+(i-1)*col, 1.41)
-    print("loop1 of graph")
+    #print("loop1 of graph")
     for i in range(0,max,col):
         g.addedge(i,i+1,1)
         g.addedge(i,i+col,1)
         g.addedge(i,i-col,1)
         g.addedge(i, i + col + 1, 1.41)
         g.addedge(i, i - col + 1, 1.41)
-    print("loop2 of graph")
+    #print("loop2 of graph")
     for i in range(col - 1,max,col):
         g.addedge(i, i - 1, 1)
         g.addedge(i, i + col, 1)
         g.addedge(i, i - col, 1)
         g.addedge(i, i + col - 1, 1.41)
         g.addedge(i, i - col - 1, 1.41)
-    print("loop3 of graph")
+    #print("loop3 of graph")
     print("graph_done")
     s,t = inpt()
     print(s,t)
@@ -276,7 +276,6 @@ def display_path():
     path.header.stamp = rospy.get_rostime()
     path.header.frame_id = "map"
     while not rospy.is_shutdown():
-            #path_temp = path_raw
         j = 0
         for i in path_raw:
             obj = PoseStamped()
