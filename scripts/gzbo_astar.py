@@ -12,15 +12,7 @@ def isempty(l):
         return True
     else:
         return False
-def so(d):
-    lst = []
-    for key in d:
-        lst.append(d[key][1])
-    for key in d:
-        if d[key][1] == min(lst):
-            a = d[key]
-            d.pop(key)
-            return a
+
 def extractpath(djs,start,goal):
     son = djs[goal]
 
