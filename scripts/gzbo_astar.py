@@ -134,7 +134,7 @@ class Graph:
     
   
 
-    def dijkstra(self,s,t):
+    def astar(self,s,t):
         global path_raw
         path_raw = []
         open = minheap()
@@ -149,7 +149,7 @@ class Graph:
             u = open.delete_min()
             #print(open.d)
             if u[0] == t:
-            	print("path_found")
+                print("path_found")
                 return extractpath(pred,s,t)
             for v in self.vertices[u[0]]:
                # print(type(v))
@@ -180,9 +180,9 @@ class Graph:
 
 def map_call(msg):
     for i in range(len(msg.data)):
-		#print(msg.data[i])
+        #print(msg.data[i])
         lst.append(msg.data[i])
-	
+    
 def map_data():
     global lst
     lst = []
@@ -190,7 +190,7 @@ def map_data():
     rospy.Subscriber('map', OccupancyGrid, map_call)
 
     rospy.sleep(1)
-	#print(lst)
+    #print(lst)
     print("map_done")
 def main_loop():
 
@@ -212,8 +212,8 @@ def main_loop():
         else:
             pass
         k = k+1
-    
-  	 
+    print("obtsacle loop over")
+     
     for i in range(row):
         for j in range(col):
             if j+i*col % col == 0 or (j+i*col % col) == col - 1:
@@ -227,22 +227,25 @@ def main_loop():
                 g.addedge(j+i*col,j-1+(i+1)*col, 1.41)
                 g.addedge(j+i*col,j+1+(i-1)*col, 1.41)
                 g.addedge(j+i*col,j-1+(i-1)*col, 1.41)
+    print("loop1 of graph")
     for i in range(0,max,col):
         g.addedge(i,i+1,1)
         g.addedge(i,i+col,1)
         g.addedge(i,i-col,1)
         g.addedge(i, i + col + 1, 1.41)
         g.addedge(i, i - col + 1, 1.41)
+    print("loop2 of graph")
     for i in range(col - 1,max,col):
         g.addedge(i, i - 1, 1)
         g.addedge(i, i + col, 1)
         g.addedge(i, i - col, 1)
         g.addedge(i, i + col - 1, 1.41)
         g.addedge(i, i - col - 1, 1.41)
+    print("loop3 of graph")
     print("graph_done")
     s,t = inpt()
     print(s,t)
-    p = g.dijkstra(s,t)
+    p = g.astar(s,t)
     if p == 0:
         print("path not found!")
     '''print(path_raw)
@@ -259,50 +262,44 @@ def main_loop():
     for e in explore:
         sys.stdout.write(e)'''
     #print(path_raw)
-    '''global path_custom
-    path_custom = []
-    for i in range(231*193 + 0,231*193 + 50):
-    	path_custom.append(i)'''
+    
 
 
 
-def callbac():
+def display_path():
     pub = rospy.Publisher("chatter",Path,queue_size = 1)
     rospy.init_node("gzbo_astar")
     j = 0
 
+    path = Path()
+    path.header.seq = j
+    path.header.stamp = rospy.get_rostime()
+    path.header.frame_id = "map"
     while not rospy.is_shutdown():
-        path = Path()
-        path.header.seq = j
-        path.header.stamp = rospy.get_rostime()
-        path.header.frame_id = "map"
-        #path_temp = []
-        #print(path_raw)
-        while not rospy.is_shutdown():
             #path_temp = path_raw
-            j = 0
-            for i in path_raw:
-                obj = PoseStamped()
-                obj.header.seq = j
-                obj.header.stamp = rospy.get_rostime()
-                obj.header.frame_id = "map"
-                obj.pose.position.x = -6.9 + (11.55/231)*(i%231)
-                obj.pose.position.y = -5.9 + (9.70/194)*(i//231)
-                obj.pose.position.z = 0
-                obj.pose.orientation.w = 1
-                path.poses.append(obj)
-                j = j+1
-            pub.publish(path)
-            path_raw.reverse()
-            rospy.sleep(1)
-		
+        j = 0
+        for i in path_raw:
+            obj = PoseStamped()
+            obj.header.seq = j
+            obj.header.stamp = rospy.get_rostime()
+            obj.header.frame_id = "map"
+            obj.pose.position.x = -6.9 + (11.55/231)*(i%231)
+            obj.pose.position.y = -5.9 + (9.70/194)*(i//231)
+            obj.pose.position.z = 0
+            obj.pose.orientation.w = 1
+            path.poses.append(obj)
+            j = j+1
+        pub.publish(path)
+        path_raw.reverse()
+        rospy.sleep(1)
+        
 if __name__ == '__main__':
     try:
-    	map_data()
-    	main_loop()
+        map_data()
+        main_loop()
         print("main_loop_over")
-        callbac()
+        display_path()
     except rospy.ROSInterruptException:
         pass
-				
-		
+                
+        
