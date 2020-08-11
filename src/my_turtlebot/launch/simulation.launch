@@ -1,0 +1,7 @@
+<launch>
+ <include file="/home/harshad/turtlebot_ws/src/my_turtlebot/launch/gazebo.launch"/>
+ <param name="robot" value="turtlebot"/>
+ <include file="/home/harshad/turtlebot_ws/src/my_turtlebot/launch/tf1.launch"/>
+ <node type="rviz" name="rviz" pkg="rviz" args="/home/harshad/turtlebot_ws/src/my_turtlebot/launch/rviz_config.rviz"/>
+ <node name="map_server" pkg="map_server" type="map_server" args="/home/harshad/turtlebot_ws/src/my_turtlebot/maps/final4.yaml" />
+</launch>
