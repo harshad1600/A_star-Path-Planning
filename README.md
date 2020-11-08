@@ -1,7 +1,7 @@
 
 # __A* algorithm implementation__
 
-A star algorithm is one of the most optimal path planning alogrithm in static environments.
+A* algorithm is one of the most optimal path planning alogrithm in static environments.
 In this project, an A* algorithm was employed to find optimal path between two given points of static map of the environment.
 Also, a proportional controller was used for motion of the bot on the obtained path.
 
