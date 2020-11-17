@@ -17,6 +17,9 @@ Map with obtained path displayed in rviz:
 
 ![](src/my_turtlebot/images/rviz_path.png)
 
+**Result**
+
+![](src/my_turtlebot/images/motion.gif)
 
 
 
